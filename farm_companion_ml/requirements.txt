@@ -1,0 +1,8 @@
+# Farm Companion ML Dependencies
+# Tested and validated on Windows 10, Python 3.12 (AMD64, CPU)
+
+tensorflow-intel==2.18.0
+numpy==2.0.2
+scikit-learn==1.9.1
+matplotlib==3.11.2
+pillow==13.0.0

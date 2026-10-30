@@ -1,0 +1,39 @@
+========================================================================
+           FARM COMPANION - MODEL EVALUATION REPORT                     
+========================================================================
+
+Model File: E:\leaf disease model\farm_companion_ml\models\leaf_disease_model.keras
+Input Resolution: 160 x 160 x 3 (RGB)
+Evaluated Test Samples: 150 images
+Overall Test Loss: 0.2668
+Overall Test Accuracy: 96.67%
+
+------------------------------------------------------------------------
+CONFUSION MATRIX (Rows: True, Columns: Predicted):
+------------------------------------------------------------------------
+                Healthy   Powdery      Rust
+Healthy:             50         0         0
+Powdery:              3        47         0
+Rust:                 1         1        48
+
+------------------------------------------------------------------------
+DETAILED CLASSIFICATION METRICS (Precision, Recall, F1-Score):
+------------------------------------------------------------------------
+              precision    recall  f1-score   support
+
+     Healthy     0.9259    1.0000    0.9615        50
+     Powdery     0.9792    0.9400    0.9592        50
+        Rust     1.0000    0.9600    0.9796        50
+
+    accuracy                         0.9667       150
+   macro avg     0.9684    0.9667    0.9668       150
+weighted avg     0.9684    0.9667    0.9668       150
+
+------------------------------------------------------------------------
+AGRICULTURAL & OPERATIONAL REALITY CAVEAT:
+High test accuracy on this benchmark dataset reflects clean, curated test
+photographs. In field conditions, variations in lighting, background foliage,
+unsupported plant species, or multiple co-occurring diseases will impact
+predictions. The Android application MUST surface confidence scores and
+provide an 'Uncertain / Inspect Manually' warning if confidence is below threshold.
+========================================================================

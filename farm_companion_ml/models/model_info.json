@@ -1,0 +1,68 @@
+{
+  "model_name": "Farm Companion Leaf Disease Classifier",
+  "version": "2.0.0",
+  "dataset": "rashikrahmanpritom/plant-disease-recognition-dataset (1,322 train / 60 val / 150 test)",
+  "classes": {
+    "0": "Healthy",
+    "1": "Powdery",
+    "2": "Rust"
+  },
+  "input_spec": {
+    "shape": [1, 160, 160, 3],
+    "width": 160,
+    "height": 160,
+    "channels": 3,
+    "color_order": "RGB",
+    "data_type": "float32",
+    "pixel_value_range": "[0.0, 255.0] float32",
+    "normalization_embedded": true,
+    "normalization_formula": "x_norm = (x / 127.5) - 1.0 (applied internally by model Rescaling layer)"
+  },
+  "output_spec": {
+    "shape": [1, 3],
+    "data_type": "float32",
+    "activation": "Softmax",
+    "semantics": "Probability distribution over [Healthy, Powdery, Rust]"
+  },
+  "model_variants": {
+    "ultralight_model": {
+      "architecture": "MobileNetV2 (alpha=0.35, lightweight head)",
+      "total_parameters": 419171,
+      "parameter_reduction": "82.1% fewer parameters",
+      "test_accuracy": "90.00% (135/150 correct)",
+      "test_loss": 0.3858,
+      "tflite_float32": {
+        "file": "leaf_disease_model_light.tflite",
+        "size_bytes": 1618368,
+        "size_mb": 1.54,
+        "parity_max_abs_diff": 3.576279e-07
+      },
+      "tflite_quantized": {
+        "file": "leaf_disease_model_light_quant.tflite",
+        "size_bytes": 556680,
+        "size_kb": 543,
+        "size_mb": 0.53
+      },
+      "recommended_use_case": "Ultra-low-end budget devices, offline low-storage phones, instant inference"
+    },
+    "standard_model": {
+      "architecture": "MobileNetV2 (alpha=1.0, deep head)",
+      "total_parameters": 2345283,
+      "test_accuracy": "96.67% (145/150 correct)",
+      "test_loss": 0.2668,
+      "tflite_float32": {
+        "file": "leaf_disease_model.tflite",
+        "size_bytes": 9201224,
+        "size_mb": 8.77,
+        "parity_max_abs_diff": 3.337860e-06
+      },
+      "tflite_quantized": {
+        "file": "leaf_disease_model_quant.tflite",
+        "size_bytes": 2598168,
+        "size_mb": 2.48
+      },
+      "recommended_use_case": "Maximum classification accuracy and precision"
+    }
+  },
+  "recommended_android_model": "leaf_disease_model_light_quant.tflite"
+}

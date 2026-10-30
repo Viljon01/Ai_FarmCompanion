@@ -1,0 +1,31 @@
+========================================================================
+     ULTRA-LIGHTWEIGHT MODEL (MobileNetV2 alpha=0.35) REPORT             
+========================================================================
+
+Keras Model File:     E:\leaf disease model\farm_companion_ml\models\leaf_disease_model_light.keras (2.22 MB)
+TFLite Float32:       E:\leaf disease model\farm_companion_ml\models\leaf_disease_model_light.tflite (1.54 MB)
+TFLite Quantized:     E:\leaf disease model\farm_companion_ml\models\leaf_disease_model_light_quant.tflite (0.53 MB / 543 KB)
+TFLite Parity Diff:   3.576279e-07
+
+Held-Out Test Samples: 150 images
+Overall Test Loss:    0.3858
+Overall Test Accuracy: 90.00%
+
+Confusion Matrix:
+                Healthy   Powdery      Rust
+Healthy:             49         1         0
+Powdery:              9        41         0
+Rust:                 5         0        45
+
+Classification Report:
+              precision    recall  f1-score   support
+
+     Healthy     0.7778    0.9800    0.8673        50
+     Powdery     0.9762    0.8200    0.8913        50
+        Rust     1.0000    0.9000    0.9474        50
+
+    accuracy                         0.9000       150
+   macro avg     0.9180    0.9000    0.9020       150
+weighted avg     0.9180    0.9000    0.9020       150
+
+========================================================================

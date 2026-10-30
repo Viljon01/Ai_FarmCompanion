@@ -1,0 +1,8 @@
+{
+  "name": "AI Farm Companion",
+  "description": "A premium, illustrated digital companion guiding Indian farmers through every step of their crop’s journey with intuitive insights.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

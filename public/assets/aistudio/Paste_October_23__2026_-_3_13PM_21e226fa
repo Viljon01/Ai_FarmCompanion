@@ -1,0 +1,747 @@
+# MASTER BUILD PROMPT — COMPLETE PRODUCTION-READY MULTILINGUAL APPLICATION
+
+## 1. YOUR ROLE AND PRIMARY OBJECTIVE
+
+Act as a senior full-stack developer, software architect, UI/UX designer, database engineer, AI integration specialist, localization engineer, and QA tester.
+
+Build a **complete, functional, production-oriented application in one implementation**, following every requirement below.
+
+Do not merely generate a landing page, static dashboard, UI mockup, or collection of disconnected screens. Implement the application end to end, including navigation, business logic, data persistence, form validation, API integration where required, error handling, loading states, empty states, authentication if specified, and complete multilingual support.
+
+The finished result must be a usable application in which every visible button, form, menu, navigation item, selector, filter, and action performs its intended function.
+
+### Core rules
+
+1. Build the actual application, not a visual demonstration.
+2. Implement the complete user journey, from the first screen to the final result.
+3. Connect every screen to real application state and working logic.
+4. Persist important data using an appropriate database or local storage mechanism.
+5. Do not use fake success messages, hardcoded dynamic results, or simulated backend responses as substitutes for required functionality.
+6. Where a third-party service requires API credentials, implement the actual integration interface, secure configuration, validation, and useful setup instructions. Never fabricate API keys.
+7. If an external service is unavailable, display an honest, understandable error and provide a suitable fallback where possible.
+8. Preserve existing project functionality when working inside an existing codebase. Do not rewrite unrelated features unnecessarily.
+9. Avoid unnecessary complexity, redundant dependencies, and placeholder features.
+10. Prioritize a stable, usable, responsive, and maintainable final application over decorative effects.
+
+---
+
+## 2. APPLICATION REQUIREMENTS
+
+Use the application concept, features, workflows, and data requirements provided in the existing project brief or the instructions accompanying this master prompt.
+
+Before implementing, inspect the existing project and identify:
+
+- The intended users and their main problems.
+- The primary purpose of the application.
+- All required features and user workflows.
+- Existing source files, components, dependencies, APIs, database schemas, and integrations.
+- Any existing functionality that must be preserved.
+- Missing screens, incomplete features, broken interactions, and technical limitations.
+
+Convert these requirements into a coherent application architecture.
+
+Do not discard requirements simply because they require additional implementation work.
+
+If an existing project is supplied, extend and repair that project instead of starting over without justification. If a new project is requested, create the complete project structure.
+
+Do not ask unnecessary questions when the brief provides enough information to proceed. Make sensible, consistent engineering decisions for nonessential details.
+
+### Functional completeness checklist
+
+Implement all applicable requirements:
+
+- Complete navigation and screen transitions.
+- Forms with validation and meaningful error messages.
+- Working buttons, dropdowns, menus, filters, search, tabs, and dialogs.
+- Real application state management.
+- Data creation, reading, updating, and deletion wherever required.
+- Correct calculations and business rules.
+- Database integration and persistence.
+- Authentication and authorization where required.
+- AI or external API integration where required.
+- Loading, success, empty, offline, and error states.
+- Responsive layouts for supported screen sizes.
+- Multilingual interface and content.
+- Accessibility and usability.
+- Appropriate security controls.
+- Testing and final verification.
+
+If a feature does not apply to the application, do not add it merely to satisfy this list.
+
+---
+
+## 3. USER INTERFACE AND EXPERIENCE
+
+Create a professional, polished interface appropriate for the application's purpose.
+
+### Visual design
+
+Use a consistent design system containing:
+
+- A defined primary and secondary color palette.
+- Consistent typography and readable font sizes.
+- Reusable spacing, border, radius, and elevation tokens.
+- Clear visual hierarchy.
+- Consistent buttons, form controls, cards, dialogs, and navigation.
+- Appropriate icons and illustrations.
+- Useful empty states and helpful microcopy.
+- Subtle, purposeful animations where they improve usability.
+
+The interface should feel like a carefully designed, real-world product rather than a generic AI-generated template.
+
+Avoid excessive gradients, unnecessary animations, overcrowded dashboards, random colors, inconsistent spacing, and decorative elements that interfere with the main task.
+
+### Responsive behavior
+
+Ensure the application works across its intended devices and screen sizes.
+
+For web applications:
+
+- Support desktop, tablet, and mobile layouts.
+- Use responsive grids, flexible containers, and appropriate breakpoints.
+- Prevent horizontal overflow and clipped content.
+- Make touch targets comfortable on mobile.
+- Keep dialogs, menus, and forms usable on small screens.
+
+For Android applications:
+
+- Use native Android conventions and the project's specified framework.
+- Support different screen sizes and display densities.
+- Handle system insets, keyboard visibility, and configuration changes.
+- Use appropriate navigation, lifecycle-aware state, and accessibility semantics.
+
+Do not mix incompatible web and native Android implementation approaches. Follow the target platform and existing project architecture.
+
+### Interaction requirements
+
+Every interactive component must have a real action.
+
+Examples:
+
+- Save must persist the current data.
+- Edit must load the selected record into an editable form.
+- Delete must remove the correct record after appropriate confirmation.
+- Search must filter the actual data.
+- Refresh must retrieve or recalculate the relevant information.
+- Language selection must change the application language.
+- Retry must repeat the failed operation.
+- Back navigation must preserve appropriate unsaved or completed state.
+
+Do not create controls that appear functional but do nothing.
+
+---
+
+## 4. SOFTWARE ARCHITECTURE AND IMPLEMENTATION
+
+Choose the appropriate architecture for the specified platform and follow it consistently.
+
+Separate the application into clear layers where appropriate:
+
+1. Presentation and UI components.
+2. Application state and business logic.
+3. Domain models and validation.
+4. Data repositories and persistence.
+5. API and external service integrations.
+6. Authentication and authorization.
+7. Configuration and localization.
+8. Testing and error handling.
+
+### Code quality
+
+- Use meaningful file names, component names, and function names.
+- Keep components focused and reusable.
+- Avoid duplicating business logic.
+- Avoid unnecessarily large components.
+- Use proper types or data models supported by the selected language.
+- Handle asynchronous operations correctly.
+- Keep secrets out of source code and client-side bundles.
+- Remove dead code, unused imports, obsolete implementations, and debug-only behavior.
+- Include useful comments for non-obvious logic.
+- Maintain consistent formatting and naming conventions.
+
+### State management
+
+Use a state-management approach suitable for the platform.
+
+The UI must update when application state changes. Loading and error states must be represented explicitly. Prevent duplicate submissions and conflicting asynchronous operations where appropriate.
+
+Do not rely on manually refreshing the screen to display updated data.
+
+### Configuration
+
+Use environment variables or platform-appropriate configuration for:
+
+- API endpoints.
+- API credentials.
+- Database connections.
+- Authentication providers.
+- AI provider settings.
+- Other environment-specific values.
+
+Provide a configuration example without real secrets. Validate required settings at startup or when the relevant feature is used.
+
+---
+
+## 5. DATABASE AND DATA PERSISTENCE
+
+Implement actual persistence for every feature that needs to retain information.
+
+Select the correct storage mechanism based on the application's architecture and requirements.
+
+Possible options include:
+
+- SQLite or Room for local Android persistence.
+- A suitable relational database for structured server-side data.
+- A managed backend or cloud database where appropriate.
+- Local storage or IndexedDB for suitable browser-only use cases.
+- Secure storage for sensitive tokens and preferences.
+
+Do not use temporary in-memory arrays as the permanent data layer for features that require persistent records.
+
+### Database requirements
+
+- Define appropriate data models and schemas.
+- Use stable identifiers.
+- Enforce validation and appropriate constraints.
+- Handle missing, corrupted, or outdated data safely.
+- Implement required create, read, update, and delete operations.
+- Prevent accidental data loss.
+- Add migrations when modifying an existing database schema.
+- Apply appropriate access controls to user-specific data.
+- Avoid storing sensitive information unnecessarily.
+
+### Offline and synchronization behavior
+
+When offline operation is relevant:
+
+- Clearly distinguish local data from server-confirmed data.
+- Save supported operations locally.
+- Queue operations that need synchronization.
+- Retry failed synchronization safely.
+- Prevent duplicate records when an operation is retried.
+- Show synchronization status.
+- Resolve conflicts according to a documented, appropriate policy.
+- Never show an operation as server-synchronized before confirmation.
+
+If the application is intentionally online-only, implement proper connectivity handling and clear error states instead.
+
+---
+
+## 6. API AND AI INTEGRATION
+
+For every required external API or AI feature, implement a genuine integration rather than an invented response.
+
+### Integration workflow
+
+1. Identify the required provider and API.
+2. Verify the supported request and response formats.
+3. Implement the API client or backend integration.
+4. Configure credentials securely.
+5. Validate inputs before sending requests.
+6. Handle loading, timeout, rate-limit, network, authentication, and server errors.
+7. Validate and parse the returned response.
+8. Store results when required.
+9. Display results in a useful format.
+10. Provide a retry or recovery path.
+
+For AI-powered features:
+
+- Use the configured model or provider.
+- Keep model instructions and application business rules separate where appropriate.
+- Validate AI responses before using them in application logic.
+- Handle malformed, incomplete, or unavailable responses.
+- Do not invent a result if the model call fails.
+- Clearly distinguish generated suggestions from verified facts when relevant.
+- Do not expose private keys in client-side code.
+- Use a secure backend proxy when the provider's credentials must remain secret.
+
+If credentials are unavailable, implement the integration and clearly identify the configuration needed to activate it. Do not falsely claim that a live integration has been tested.
+
+---
+
+## 7. COMPLETE MULTILINGUAL SUPPORT
+
+Implement full multilingual support across the entire application. Language support must be part of the underlying architecture, not an optional cosmetic feature.
+
+### Required languages
+
+Support all six languages:
+
+1. English — `en`
+2. Tamil — `ta`
+3. Telugu — `te`
+4. Hindi — `hi`
+5. Malayalam — `ml`
+6. Kannada — `kn`
+
+English is the default language on the first launch unless the existing application specifies another default.
+
+Provide a language selector that allows users to switch languages at any time.
+
+Display each language using its native name:
+
+- English
+- தமிழ்
+- తెలుగు
+- हिन्दी
+- മലയാളം
+- ಕನ್ನಡ
+
+### 7.1 Language selector
+
+Place the language selector somewhere easy to discover, such as the settings screen, profile menu, or application header.
+
+The selector must:
+
+- Show the currently selected language.
+- Present all six supported languages.
+- Change the entire supported interface immediately after selection.
+- Update labels, navigation, forms, buttons, dialogs, validation messages, notifications, and other localized content.
+- Persist the selection across app restarts.
+- Work consistently across all screens.
+- Avoid requiring the user to restart the application unless the platform genuinely requires it.
+
+If a saved language is unavailable or invalid, safely fall back to English.
+
+### 7.2 Centralized translation architecture
+
+Never hardcode user-facing text throughout the UI components.
+
+Create a centralized localization system using the platform's recommended internationalization mechanism.
+
+For web applications, use an appropriate internationalization library and translation resource files.
+
+For native Android applications, use Android resource localization, including `strings.xml` and language-specific resource directories, while maintaining compatibility with the chosen UI framework.
+
+Organize translations consistently. Example conceptual structure:
+
+- `locales/en`
+- `locales/ta`
+- `locales/te`
+- `locales/hi`
+- `locales/ml`
+- `locales/kn`
+
+Use the exact directory conventions recommended by the chosen framework.
+
+Each language must contain a complete, consistent set of translation keys.
+
+Example conceptual keys:
+
+- `app.title`
+- `navigation.home`
+- `navigation.settings`
+- `common.save`
+- `common.cancel`
+- `common.loading`
+- `common.retry`
+- `form.required`
+- `form.invalidInput`
+- `errors.network`
+- `language.select`
+
+Use the appropriate localization framework's syntax in the actual implementation.
+
+Do not implement translations using scattered conditional statements such as `if language == Tamil` throughout the UI.
+
+### 7.3 Translate the entire interface
+
+Audit every screen and translate all user-visible text, including:
+
+- Application title and branding text where localization is appropriate.
+- Onboarding screens.
+- Navigation labels.
+- Dashboard headings.
+- Section titles and descriptions.
+- Buttons and links.
+- Forms, placeholders, and field labels.
+- Dropdown options.
+- Search hints.
+- Tooltips.
+- Dialogs and confirmation messages.
+- Validation errors.
+- Authentication messages.
+- Loading indicators and empty states.
+- Success and failure messages.
+- Notifications and alerts.
+- Settings screens.
+- Reports and summaries.
+- Accessibility labels and descriptions.
+- Help text and instructions.
+- Generated content where applicable.
+
+Do not leave English-only labels in the Tamil, Telugu, Hindi, Malayalam, or Kannada interface unless the text is an intentionally untranslated brand name, technical identifier, or user-provided content.
+
+Do not translate programming identifiers, database keys, API fields, or internal enum values. Localize their user-facing representations instead.
+
+### 7.4 Translation quality
+
+Use natural, readable translations appropriate for the intended users.
+
+Do not blindly translate every English phrase word by word. Preserve the original meaning, tone, and purpose.
+
+For technical terms:
+
+- Retain standard technical terms when that is the clearest choice.
+- Add a simple localized explanation when helpful.
+- Use consistent terminology across all screens.
+- Avoid inconsistent mixtures of scripts and languages.
+- Preserve proper nouns and brand names where appropriate.
+
+Use the same translation key for the same concept across the application.
+
+Do not display raw translation keys, missing-key identifiers, or programming placeholders to the user.
+
+### 7.5 Indian-language typography and layout
+
+Ensure the interface correctly renders Tamil, Telugu, Devanagari, Malayalam, and Kannada scripts.
+
+- Use fonts that support the required scripts.
+- Use appropriate line heights and text sizes.
+- Prevent clipping of vowel marks, combining marks, and complex glyphs.
+- Allow labels and buttons to expand for longer translations.
+- Avoid fixed-width controls that truncate localized text.
+- Test line wrapping on small screens.
+- Ensure screen readers can interpret localized content.
+- Verify that font fallback works when the preferred font is unavailable.
+
+Use native platform fonts where they provide reliable script coverage. Include additional licensed fonts only when necessary.
+
+### 7.6 Number, date, time, and currency formatting
+
+Use locale-aware formatting for:
+
+- Dates.
+- Times.
+- Numbers.
+- Decimal separators.
+- Percentages.
+- Currency.
+- Units of measurement.
+
+Use Indian rupees (`₹`, INR) when the application's financial context requires Indian currency. Do not blindly replace a different explicitly required currency.
+
+Avoid hardcoding date formats such as `MM/DD/YYYY` throughout the application.
+
+Store dates and numeric values in suitable machine-readable formats and localize their presentation.
+
+### 7.7 Dynamic and AI-generated content
+
+If the application generates AI responses, explanations, recommendations, reports, summaries, or conversational responses, the selected language must also control that generated content wherever the feature supports it.
+
+Pass the selected language explicitly to the AI service.
+
+Use a language instruction equivalent to:
+
+"Respond in the user's selected language: [SELECTED_LANGUAGE]. Use natural, clear, culturally appropriate language. Preserve technical accuracy and all required information. Do not switch to English unnecessarily. Retain standard technical terms when appropriate and explain them in the selected language when useful."
+
+Do not assume that translating the UI automatically translates AI responses.
+
+If the model returns content in the wrong language:
+
+- Validate the response when feasible.
+- Retry or request correction when appropriate.
+- Handle the failure gracefully.
+- Do not falsely guarantee perfect language detection or translation.
+
+Keep structured response fields stable internally while localizing their visible labels.
+
+For example, a report can internally store a stable value such as `high_risk`, while displaying the appropriate translated label to the user.
+
+### 7.8 Speech and voice functionality
+
+If the application includes voice input, speech recognition, audio playback, or text-to-speech:
+
+- Use the selected language where supported.
+- Configure the appropriate language code for the speech service.
+- Handle unavailable language packs and unsupported locales.
+- Show a useful message if the selected speech language cannot be used.
+- Provide a text-based alternative wherever practical.
+- Do not silently substitute an unrelated language.
+- Keep speech language settings consistent with the selected application language unless the user can explicitly configure them separately.
+
+Do not add voice functionality if it is outside the application's requirements.
+
+### 7.9 Localization persistence and consistency
+
+Save the selected language using the platform's appropriate persistent preference mechanism.
+
+On launch:
+
+1. Read the saved language.
+2. Validate that it is supported.
+3. Load the corresponding translations.
+4. Initialize the UI in that language.
+5. Apply the language consistently to new screens and background-generated user-facing messages.
+
+Ensure language changes do not unintentionally clear form data, sign the user out, delete records, reset navigation, or discard completed work.
+
+Keep internal database records and API contracts stable when the display language changes.
+
+### 7.10 Translation completeness checks
+
+Create a translation key audit or equivalent test.
+
+Verify that:
+
+- Every required key exists in all six languages.
+- No language contains accidentally missing translations.
+- No raw key names appear in the UI.
+- Placeholder variables are preserved correctly.
+- Plural forms are handled properly where relevant.
+- Dynamic values are inserted safely.
+- Long text does not break the layout.
+- All supported languages render correctly on target devices.
+
+Do not mark multilingual support as complete if only the home screen or language selector is translated.
+
+---
+
+## 8. SECURITY, PRIVACY, AND RELIABILITY
+
+Apply appropriate security practices for the application's actual requirements.
+
+- Validate user input on both client and server when relevant.
+- Use secure authentication flows where authentication is required.
+- Enforce authorization on protected data and operations.
+- Protect API credentials and private tokens.
+- Avoid logging secrets or unnecessary personal data.
+- Handle file uploads securely if the application supports them.
+- Use HTTPS for production network requests.
+- Avoid unsafe dynamic SQL or equivalent injection vulnerabilities.
+- Provide appropriate permission prompts.
+- Request only the device permissions necessary for the feature.
+- Avoid exposing private user data through public endpoints.
+- Handle session expiry and authentication errors gracefully.
+
+For sensitive workflows, implement suitable privacy protections and make data handling understandable to users.
+
+Do not add artificial security claims. Implement the controls that the architecture actually supports.
+
+---
+
+## 9. ACCESSIBILITY AND USABILITY
+
+Make the application usable by people with different accessibility needs.
+
+- Use readable text and sufficient contrast.
+- Provide accessible labels for interactive controls.
+- Support keyboard navigation where relevant.
+- Use semantic headings and controls.
+- Provide meaningful error messages.
+- Do not rely on color alone to communicate status.
+- Ensure dialogs and menus can be operated accessibly.
+- Support screen readers using the appropriate platform conventions.
+- Ensure localized text remains accessible.
+- Respect system font scaling where possible.
+
+Accessibility must work across all six supported languages.
+
+---
+
+## 10. TESTING AND QUALITY ASSURANCE
+
+Do not finish immediately after generating the code.
+
+Run the available development, build, lint, and test commands appropriate to the selected platform.
+
+### 10.1 Build verification
+
+Check for:
+
+- Compilation failures.
+- Missing dependencies.
+- Invalid imports.
+- Incorrect file paths.
+- Type errors.
+- Broken routes.
+- Invalid component properties.
+- Configuration errors.
+- Database initialization issues.
+- API integration failures.
+- Runtime exceptions.
+
+Fix the errors introduced by the implementation.
+
+### 10.2 Functional testing
+
+Test the application's primary workflows from beginning to end.
+
+Verify that:
+
+- Navigation works.
+- Forms validate correctly.
+- Data saves and reloads correctly.
+- Editing and deleting affect the intended records.
+- Loading and error states are handled.
+- API calls are processed correctly.
+- Authentication works if applicable.
+- Language changes take effect.
+- Saved preferences survive a restart.
+- Offline behavior works if required.
+- The UI remains stable after repeated interactions.
+
+### 10.3 Multilingual testing
+
+Test each of the six languages individually.
+
+For every language, verify:
+
+1. The application launches correctly.
+2. All major screens display the correct translations.
+3. Navigation and buttons remain functional.
+4. Form labels and validation messages are localized.
+5. Long text fits within the layout.
+6. Dates, numbers, and currency use appropriate formatting.
+7. Dynamic and AI-generated content follows the selected language where applicable.
+8. The selected language persists after restarting.
+9. Switching to another language does not lose user data.
+10. No unintended untranslated strings remain.
+
+### 10.4 Test real workflows, not just screenshots
+
+Where tools are available, run the application and exercise actual user interactions.
+
+For web applications, test the application in a browser.
+
+For Android applications, use the available emulator, device, or build tools.
+
+For backend services, test the relevant endpoints and database operations.
+
+If the environment cannot execute a test, explicitly state that it was not executed. Never claim that a test passed when it was not run.
+
+---
+
+## 11. IMPLEMENTATION WORKFLOW
+
+Follow this sequence internally while producing one coherent final application.
+
+### Phase 1 — Inspect and plan
+
+- Read the complete project brief.
+- Inspect the existing codebase when supplied.
+- Identify required features and existing constraints.
+- Choose the correct architecture and dependencies.
+- Define the data models and main user workflows.
+- Establish the localization strategy before creating UI text.
+
+### Phase 2 — Build the foundation
+
+- Configure the project.
+- Establish the design system.
+- Set up routing and navigation.
+- Configure application state.
+- Create data models and persistence.
+- Configure API integrations.
+- Create the translation resources for all six languages.
+
+### Phase 3 — Implement all features
+
+- Build every required screen.
+- Implement all business logic.
+- Connect UI components to real state.
+- Connect the data layer.
+- Implement actual API and AI integrations where required.
+- Add form validation and error handling.
+- Implement complete localization.
+- Implement all required offline and synchronization behavior.
+
+### Phase 4 — Integrate
+
+- Connect every screen to the appropriate services.
+- Verify that the complete user journey works.
+- Remove duplicate or conflicting implementations.
+- Ensure state and navigation remain consistent.
+- Verify that switching languages affects every applicable screen.
+
+### Phase 5 — Test and repair
+
+- Run build and test commands.
+- Fix compilation and runtime errors.
+- Exercise the main user workflows.
+- Test each supported language.
+- Check responsive behavior and accessibility.
+- Recheck the project after fixes.
+
+### Phase 6 — Finalize
+
+- Ensure the application starts successfully.
+- Verify that all required files are present.
+- Provide clear setup and launch instructions.
+- Identify any external configuration or credentials still needed.
+- State which tests were actually executed and their results.
+- Document any genuine limitations that could not be resolved.
+
+These phases describe the implementation process. They do not mean that you should stop after producing a plan or complete only the first phase.
+
+**Proceed through the full implementation and testing workflow before declaring the task complete.**
+
+---
+
+## 12. REQUIRED DELIVERABLES
+
+Provide the complete implementation appropriate to the selected platform.
+
+The deliverables must include:
+
+1. All required application source files.
+2. All required UI screens and reusable components.
+3. Complete application logic and navigation.
+4. Database schemas, repositories, and persistence logic where applicable.
+5. API integration code and secure configuration instructions where applicable.
+6. Translation resources for English, Tamil, Telugu, Hindi, Malayalam, and Kannada.
+7. Required dependencies and project configuration.
+8. Environment configuration examples without real secrets.
+9. Setup and launch instructions.
+10. Build and test results based on actual execution.
+11. A clear list of any remaining external setup requirements.
+12. A concise explanation of the application's implemented functionality.
+
+If the environment supports direct project editing, create and modify the actual project files rather than merely printing sample snippets.
+
+If the environment supports running or previewing the application, use that capability to verify the implementation.
+
+If a required third-party credential, service, hardware device, or external permission prevents full verification, explain the exact limitation and complete everything that can be implemented without it.
+
+---
+
+## 13. STRICT ACCEPTANCE CRITERIA
+
+The application is complete only when the applicable criteria below are satisfied.
+
+- [ ] The project builds or runs successfully in the available environment.
+- [ ] The actual application is implemented, not just a static mockup.
+- [ ] All required screens and user workflows exist.
+- [ ] Every visible interactive control has a meaningful action.
+- [ ] Data persistence works wherever required.
+- [ ] Required API and AI integrations are implemented.
+- [ ] Errors and unavailable services are handled honestly.
+- [ ] The UI is consistent, professional, and responsive.
+- [ ] All six languages are supported.
+- [ ] The language selector works and persists its selection.
+- [ ] Every applicable screen is localized.
+- [ ] Dynamic content respects the selected language where supported.
+- [ ] No missing translation keys or unintended raw keys appear.
+- [ ] Existing functionality has been preserved where required.
+- [ ] Build, functional, and localization checks have been executed where the environment permits.
+- [ ] Setup instructions and real limitations are documented.
+
+Do not claim full completion merely because code files have been generated.
+
+---
+
+## 14. FINAL EXECUTION INSTRUCTION
+
+Now use the actual application requirements supplied with this prompt and build the complete application.
+
+Make sensible engineering decisions without unnecessary clarification. Implement the UI, logic, data layer, integrations, and multilingual architecture together so that they form one consistent application.
+
+Do not respond with only an implementation plan, tutorial, architecture description, partial code sample, or list of suggested features.
+
+Do not leave required functionality as TODO comments or nonfunctional placeholders.
+
+Do not sacrifice working features to make the UI look finished.
+
+Build the application, run the available verification steps, correct the problems you can identify, and provide the resulting implementation with setup instructions.
+
+**Final priority: functional correctness first, complete user workflows second, multilingual consistency third, security and reliability throughout, and visual polish across the entire experience.**

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <!-- Gentle rising sun behind sprout -->
+    <path
+        android:pathData="M54,44 m-14,0 a14,14 0 1,0 28,0 a14,14 0 1,0 -28,0"
+        android:fillColor="#F6C868" />
+    <!-- Sun rays -->
+    <path
+        android:pathData="M54,23 L54,28 M39,29 L43,33 M69,29 L65,33 M33,44 L38,44 M75,44 L70,44"
+        android:strokeColor="#F6C868"
+        android:strokeWidth="2"
+        android:strokeLineCap="round" />
+    <!-- Plant stem -->
+    <path
+        android:pathData="M54,78 C54,64 54,48 54,40"
+        android:strokeColor="#FFFFFF"
+        android:strokeWidth="3.2"
+        android:strokeLineCap="round" />
+    <!-- Left Leaf -->
+    <path
+        android:pathData="M54,58 C46,58 36,52 38,40 C48,40 54,50 54,58 Z"
+        android:fillColor="#81C784"
+        android:strokeColor="#FFFFFF"
+        android:strokeWidth="1.8"
+        android:strokeLineJoin="round" />
+    <!-- Right Leaf -->
+    <path
+        android:pathData="M54,49 C62,49 72,43 70,31 C60,31 54,41 54,49 Z"
+        android:fillColor="#A5D6A7"
+        android:strokeColor="#FFFFFF"
+        android:strokeWidth="1.8"
+        android:strokeLineJoin="round" />
+    <!-- Fertile mound line -->
+    <path
+        android:pathData="M32,78 C44,74 64,74 76,78"
+        android:strokeColor="#E8F5E9"
+        android:strokeWidth="2.5"
+        android:strokeLineCap="round" />
+</vector>
