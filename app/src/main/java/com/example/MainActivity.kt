@@ -227,6 +227,15 @@ class MainActivity : ComponentActivity() {
                                                 engine.selectCropStage(2)
                                                 currentDestination = AppDestination.JOURNEY
                                             },
+                                            onConfirmPlantCrop = { cropName, variety, acres ->
+                                                engine.updatePlantedCrop(cropName, variety, acres)
+                                                engine.selectCropStage(2)
+                                                currentDestination = AppDestination.JOURNEY
+                                            },
+                                            onAskAiSuitability = { query ->
+                                                engine.sendAssistantPrompt("Is $query suitable for my farm in ${cropContext.farm.location} with ${cropContext.farm.soilType} soil?")
+                                                showAiCompanionSheet = true
+                                            },
                                             modifier = contentModifier
                                         )
                                     }

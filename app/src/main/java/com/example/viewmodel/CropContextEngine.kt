@@ -351,6 +351,121 @@ class CropContextEngine(application: Application) : AndroidViewModel(application
         }
     }
 
+    fun updatePlantedCrop(
+        cropName: String,
+        variety: String,
+        landSizeAcres: Double,
+        location: String = "",
+        soilType: String = "",
+        waterAvailability: String = "",
+        stageIndex: Int = 1
+    ) {
+        viewModelScope.launch {
+            _cropContext.value = _cropContext.value.copy(isLoading = true)
+
+            val currentFarm = _cropContext.value.farm.copy(
+                landSizeAcres = if (landSizeAcres > 0) landSizeAcres else _cropContext.value.farm.landSizeAcres,
+                location = location.ifBlank { _cropContext.value.farm.location },
+                soilType = soilType.ifBlank { _cropContext.value.farm.soilType },
+                waterAvailability = waterAvailability.ifBlank { _cropContext.value.farm.waterAvailability }
+            )
+            dao.insertFarm(currentFarm)
+
+            val stageName = when (stageIndex) {
+                0 -> "01 SOWING"
+                1 -> "02 GERMINATION"
+                2 -> "03 VEGETATIVE"
+                3 -> "04 FLOWERING"
+                4 -> "05 FRUITING"
+                5 -> "06 HARVEST"
+                else -> "03 VEGETATIVE"
+            }
+
+            val updatedCycle = CropCycle(
+                id = "cycle_${cropName.lowercase().replace(" ", "_")}",
+                farmId = currentFarm.id,
+                cropName = cropName,
+                variety = variety.ifBlank { "High-Yield Local" },
+                acres = currentFarm.landSizeAcres,
+                plantingDate = "Oct 29, 2026",
+                cropAgeDays = if (stageIndex <= 1) 14 else 35,
+                currentStageIndex = stageIndex,
+                currentStageName = stageName,
+                currentStageDescription = "Active $cropName $stageName Stage",
+                status = "Active"
+            )
+
+            // Re-fetch live weather
+            val liveWeather = weatherService.getCurrentWeather(currentFarm.location)
+            val liveForecast = weatherService.get7DayForecast(currentFarm.location)
+
+            // Observation
+            val newObs = CropObservation(
+                id = "obs_${updatedCycle.id}_${updatedCycle.cropAgeDays}",
+                dayNumber = updatedCycle.cropAgeDays,
+                dateLabel = "Day ${updatedCycle.cropAgeDays} • $cropName Planting Confirmed",
+                stageName = stageName,
+                healthScore = 90,
+                summary = "Active crop updated to $cropName ($variety) on ${currentFarm.landSizeAcres} Acres.",
+                detail = "Location: ${currentFarm.location}, Soil: ${currentFarm.soilType}, Water: ${currentFarm.waterAvailability}.",
+                riskLevel = "Low",
+                confidencePercent = 95,
+                observedChanges = "Crop registered and field tracking initialized.",
+                suggestedNextSteps = "Follow $stageName maintenance protocol for $cropName.",
+                leafCondition = "Healthy $cropName foliage, optimal root anchorage.",
+                weatherCondition = liveWeather.conditionTitle,
+                isCurrent = true,
+                drawableResName = "img_during_cultivation"
+            )
+            dao.insertObservation(newObs)
+
+            // Notification
+            val notif = NotificationItem(
+                id = UUID.randomUUID().toString(),
+                title = "Active Crop Updated",
+                message = "You have selected $cropName ($variety) on ${currentFarm.landSizeAcres} Acres.",
+                category = NotificationCategory.ALERT,
+                timeAgo = "Just now",
+                timestamp = "Just now",
+                isRead = false,
+                targetScreen = "JOURNEY"
+            )
+            dao.insertNotification(notif)
+
+            val updatedNotifs = listOf(notif) + _cropContext.value.notifications
+
+            // Re-generate stages
+            val stages = cropJourneyService.getCropJourney(updatedCycle.id)
+            _journeyStages.value = stages
+
+            _cropContext.value = CropContext(
+                farmer = _cropContext.value.farmer,
+                farm = currentFarm,
+                cropCycle = updatedCycle,
+                latestObservation = newObs,
+                previousObservation = null,
+                recentObservations = listOf(newObs),
+                activeRisks = emptyList(),
+                currentWeather = liveWeather,
+                weatherForecast = liveForecast,
+                yieldEstimate = YieldEstimate(
+                    cropCycleId = updatedCycle.id,
+                    expectedYieldTonnesMin = (currentFarm.landSizeAcres * 2.5),
+                    expectedYieldTonnesMax = (currentFarm.landSizeAcres * 3.5),
+                    expectedYieldBagsMin = (currentFarm.landSizeAcres * 100).toInt(),
+                    expectedYieldBagsMax = (currentFarm.landSizeAcres * 140).toInt(),
+                    estimatedCostTotal = (currentFarm.landSizeAcres * 21000).toInt(),
+                    projectedRevenue = (currentFarm.landSizeAcres * 70000).toInt()
+                ),
+                marketOptions = marketService.getMarketOptions(updatedCycle.id),
+                notifications = updatedNotifs,
+                isLoading = false
+            )
+
+            generateReport()
+        }
+    }
+
     fun restoreSessionKey(sessionKey: String) {
         viewModelScope.launch {
             _cropContext.value = _cropContext.value.copy(isLoading = true)

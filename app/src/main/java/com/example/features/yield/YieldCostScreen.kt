@@ -1,12 +1,12 @@
 package com.example.features.yield
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
@@ -22,6 +22,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.R
@@ -32,9 +33,8 @@ import com.example.ui.theme.*
 import com.example.data.localization.*
 
 /**
- * FEATURE 08 — YIELD ESTIMATION & COST BREAKDOWN
- * Transparent cost vs profit calculations, expected tonnage, harvest readiness,
- * and smart selling routing.
+ * FEATURE 08 — YIELD ESTIMATION & COST BREAKDOWN (Interactive & Editable)
+ * Real-time editable estimation for Acres, Tonnes per Acre, Market Price, and Production Cost.
  */
 @Composable
 fun YieldCostScreen(
@@ -44,7 +44,24 @@ fun YieldCostScreen(
     modifier: Modifier = Modifier
 ) {
     val scrollState = rememberScrollState()
-    val yield = cropContext.yieldEstimate
+
+    // Interactive & Editable Estimation States
+    var acresInput by remember { mutableStateOf("${cropContext.farm.landSizeAcres}") }
+    var yieldPerAcreInput by remember { mutableStateOf("2.8") }
+    var pricePerKgInput by remember { mutableStateOf("28") }
+    var totalCostInput by remember { mutableStateOf("${(cropContext.farm.landSizeAcres * 31500).toInt()}") }
+
+    // Live Calculations
+    val acres = acresInput.toDoubleOrNull() ?: cropContext.farm.landSizeAcres
+    val yieldPerAcre = yieldPerAcreInput.toDoubleOrNull() ?: 2.8
+    val pricePerKg = pricePerKgInput.toDoubleOrNull() ?: 28.0
+    val totalCost = totalCostInput.toDoubleOrNull() ?: (acres * 31500)
+
+    val totalYieldTonnes = acres * yieldPerAcre
+    val totalCrates = (totalYieldTonnes * 40).toInt() // 25kg standard crates
+    val projectedRevenue = totalYieldTonnes * 1000 * pricePerKg
+    val netProfit = projectedRevenue - totalCost
+    val netRoiPercent = if (totalCost > 0) ((netProfit / totalCost) * 100).toInt() else 0
 
     Column(
         modifier = modifier
@@ -54,16 +71,16 @@ fun YieldCostScreen(
     ) {
         PageHeader(
             stageTag = st("STAGE 05 • HARVEST"),
-            title = st("Yield & Cost Forecast"),
-            subtitle = st("Estimated harvest volume and financial return"),
+            title = st("Interactive Yield & Profit Estimator"),
+            subtitle = st("Edit parameters below to simulate different harvest & profit scenarios"),
             onBack = onBack
         )
 
-        // Hand-drawn Illustration Hero Card: Before Harvest
+        // Hero Card: Harvest Preview
         Card(
             shape = RoundedCornerShape(20.dp),
             colors = CardDefaults.cardColors(containerColor = AgriCardSurface),
-            border = androidx.compose.foundation.BorderStroke(1.2.dp, AgriLineSubtle),
+            border = BorderStroke(1.2.dp, AgriLineSubtle),
             modifier = Modifier.fillMaxWidth()
         ) {
             Column(
@@ -75,14 +92,14 @@ fun YieldCostScreen(
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(180.dp)
+                        .height(160.dp)
                         .clip(RoundedCornerShape(16.dp))
                         .background(AgriWarmBg)
                 ) {
                     SubtleFarmBackground(modifier = Modifier.fillMaxSize())
                     Image(
                         painter = painterResource(id = R.drawable.img_before_harvest),
-                        contentDescription = "Healthy mature tomato crop with ripe red fruits",
+                        contentDescription = "Mature crop ready for harvest",
                         contentScale = ContentScale.Fit,
                         modifier = Modifier
                             .fillMaxSize()
@@ -90,37 +107,106 @@ fun YieldCostScreen(
                     )
                 }
 
-                Spacer(modifier = Modifier.height(12.dp))
+                Spacer(modifier = Modifier.height(10.dp))
 
                 Text(
-                    text = "“${st("Before Harvest")}”",
+                    text = "${st("Active Crop")}: ${st(cropContext.cropCycle.cropName)} (${cropContext.cropCycle.variety})",
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.Bold,
                     color = AgriForestGreen
                 )
                 Text(
-                    text = "“${st("Will I get a good yield?")}”",
-                    style = MaterialTheme.typography.headlineSmall,
-                    fontWeight = FontWeight.Bold,
-                    color = AgriTextPrimary
-                )
-                Spacer(modifier = Modifier.height(4.dp))
-                Text(
-                    text = st("Based on canopy coverage, flower-to-fruit conversion rates, and 2-acre plot telemetry in Coimbatore."),
+                    text = st("Customize yield tonnage, price per kg, and cost to calculate expected net profit:"),
                     style = MaterialTheme.typography.bodySmall,
                     color = AgriTextSecondary,
-                    fontSize = 12.sp
+                    fontSize = 11.5.sp
                 )
             }
         }
 
         Spacer(modifier = Modifier.height(14.dp))
 
-        // Big Metric Card: Estimated Harvest Range
+        // Editable Input Parameters Card
+        Card(
+            shape = RoundedCornerShape(18.dp),
+            colors = CardDefaults.cardColors(containerColor = AgriCardSurface),
+            border = androidx.compose.foundation.BorderStroke(1.2.dp, AgriForestGreen.copy(alpha = 0.4f)),
+            modifier = Modifier.fillMaxWidth().testTag("editable_yield_parameters")
+        ) {
+            Column(modifier = Modifier.padding(16.dp)) {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Icon(Icons.Default.Edit, contentDescription = null, tint = AgriForestGreen, modifier = Modifier.size(18.dp))
+                    Spacer(modifier = Modifier.width(6.dp))
+                    Text(
+                        text = st("Try Your Own Yield & Financial Estimations"),
+                        style = MaterialTheme.typography.titleSmall,
+                        fontWeight = FontWeight.Bold,
+                        color = AgriForestGreen
+                    )
+                }
+
+                Spacer(modifier = Modifier.height(12.dp))
+
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    OutlinedTextField(
+                        value = acresInput,
+                        onValueChange = { acresInput = it },
+                        label = { Text(st("Land Size (Acres)"), maxLines = 1, overflow = TextOverflow.Ellipsis) },
+                        shape = RoundedCornerShape(10.dp),
+                        modifier = Modifier.weight(1f),
+                        singleLine = true
+                    )
+
+                    OutlinedTextField(
+                        value = yieldPerAcreInput,
+                        onValueChange = { yieldPerAcreInput = it },
+                        label = { Text(st("Yield (Tonnes/Acre)"), maxLines = 1, overflow = TextOverflow.Ellipsis) },
+                        shape = RoundedCornerShape(10.dp),
+                        modifier = Modifier.weight(1f),
+                        singleLine = true
+                    )
+                }
+
+                Spacer(modifier = Modifier.height(8.dp))
+
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    OutlinedTextField(
+                        value = pricePerKgInput,
+                        onValueChange = { pricePerKgInput = it },
+                        label = { Text(st("Selling Price (₹/kg)"), maxLines = 1, overflow = TextOverflow.Ellipsis) },
+                        shape = RoundedCornerShape(10.dp),
+                        modifier = Modifier.weight(1f),
+                        singleLine = true
+                    )
+
+                    OutlinedTextField(
+                        value = totalCostInput,
+                        onValueChange = { totalCostInput = it },
+                        label = { Text(st("Total Cost (₹)"), maxLines = 1, overflow = TextOverflow.Ellipsis) },
+                        shape = RoundedCornerShape(10.dp),
+                        modifier = Modifier.weight(1f),
+                        singleLine = true
+                    )
+                }
+            }
+        }
+
+        Spacer(modifier = Modifier.height(14.dp))
+
+        // Live Calculated Yield Summary Card
         Card(
             shape = RoundedCornerShape(18.dp),
             colors = CardDefaults.cardColors(containerColor = AgriSageLight),
-            border = androidx.compose.foundation.BorderStroke(1.2.dp, AgriForestGreen.copy(alpha = 0.3f)),
+            border = androidx.compose.foundation.BorderStroke(1.2.dp, AgriForestGreen),
             modifier = Modifier.fillMaxWidth()
         ) {
             Column(modifier = Modifier.padding(18.dp)) {
@@ -130,7 +216,7 @@ fun YieldCostScreen(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
-                        text = st("PROJECTED YIELD (2 ACRES)"),
+                        text = "LIVE ESTIMATED YIELD ($acres ACRES)",
                         style = MaterialTheme.typography.labelSmall,
                         fontWeight = FontWeight.Bold,
                         color = AgriForestGreen,
@@ -142,8 +228,8 @@ fun YieldCostScreen(
                         border = androidx.compose.foundation.BorderStroke(1.dp, AgriLineSubtle)
                     ) {
                         Text(
-                            text = "${st("Confidence")}: ${yield.confidencePercent}%",
-                            fontSize = 11.sp,
+                            text = "${st("Dynamic Calculation")}",
+                            fontSize = 10.sp,
                             fontWeight = FontWeight.Bold,
                             color = AgriForestGreen,
                             modifier = Modifier.padding(horizontal = 8.dp, vertical = 2.dp)
@@ -154,14 +240,14 @@ fun YieldCostScreen(
                 Spacer(modifier = Modifier.height(8.dp))
 
                 Text(
-                    text = "${yield.expectedYieldTonnesMin} – ${yield.expectedYieldTonnesMax} ${st("Tonnes")}",
+                    text = "${String.format("%.1f", totalYieldTonnes)} ${st("Tonnes")}",
                     style = MaterialTheme.typography.headlineMedium,
                     fontWeight = FontWeight.ExtraBold,
                     color = AgriForestGreen
                 )
 
                 Text(
-                    text = "${st("Estimated")} ${yield.expectedYieldBagsMin} ${st("to")} ${yield.expectedYieldBagsMax} ${st("crates (25kg standard farm crates)")}",
+                    text = "${st("Equivalent to")} ~$totalCrates ${st("crates (25kg standard crates)")}",
                     style = MaterialTheme.typography.bodySmall,
                     color = AgriTextPrimary,
                     fontWeight = FontWeight.Medium
@@ -169,10 +255,10 @@ fun YieldCostScreen(
 
                 Spacer(modifier = Modifier.height(8.dp))
                 Text(
-                    text = "${st("Harvest window opens in")} ${yield.harvestWindowDays} ${t("common.days")}.",
+                    text = "${st("Expected Harvest Window")}: Day 75 – 85.",
                     style = MaterialTheme.typography.bodySmall,
                     color = AgriTextSecondary,
-                    fontSize = 12.sp
+                    fontSize = 11.5.sp
                 )
             }
         }
@@ -188,62 +274,40 @@ fun YieldCostScreen(
         ) {
             Column(modifier = Modifier.padding(16.dp)) {
                 Text(
-                    text = st("COST & PROFIT VISIBILITY"),
+                    text = st("ESTIMATED FINANCIAL RETURN"),
                     style = MaterialTheme.typography.labelSmall,
                     fontWeight = FontWeight.Bold,
                     color = AgriTextSecondary,
                     letterSpacing = 0.8.sp
                 )
 
-                Spacer(modifier = Modifier.height(12.dp))
-
-                // Breakdown items
-                val costItems = listOf(
-                    st("Hybrid Seedlings & Nursery") to "₹12,000",
-                    st("Fertilizer, Compost & Bio-nutrients") to "₹18,500",
-                    st("Labor, Trellising & Weeding") to "₹24,000",
-                    st("Drip Irrigation & Electric Pump") to "₹8,500"
-                )
-
-                costItems.forEach { (item, cost) ->
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(vertical = 4.dp),
-                        horizontalArrangement = Arrangement.SpaceBetween
-                    ) {
-                        Text(item, fontSize = 12.sp, color = AgriTextSecondary)
-                        Text(cost, fontSize = 12.sp, fontWeight = FontWeight.SemiBold, color = AgriTextPrimary)
-                    }
-                }
-
-                HorizontalDivider(modifier = Modifier.padding(vertical = 8.dp), color = AgriLineSubtle)
+                Spacer(modifier = Modifier.height(10.dp))
 
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
                     Text(st("Total Production Cost"), fontWeight = FontWeight.Bold, color = AgriTextPrimary, fontSize = 13.sp)
-                    Text("₹${yield.estimatedCostTotal}", fontWeight = FontWeight.Bold, color = AgriTomatoRed, fontSize = 13.sp)
+                    Text("₹${String.format("%,d", totalCost.toLong())}", fontWeight = FontWeight.Bold, color = AgriTomatoRed, fontSize = 13.sp)
                 }
 
-                Spacer(modifier = Modifier.height(4.dp))
+                Spacer(modifier = Modifier.height(6.dp))
 
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
-                    Text(st("Projected Revenue (@ ₹28/kg)"), fontWeight = FontWeight.Bold, color = AgriTextPrimary, fontSize = 13.sp)
-                    Text("₹${yield.projectedRevenue}", fontWeight = FontWeight.Bold, color = AgriForestGreen, fontSize = 13.sp)
+                    Text(st("Projected Revenue (@ ₹$pricePerKg/kg)"), fontWeight = FontWeight.Bold, color = AgriTextPrimary, fontSize = 13.sp)
+                    Text("₹${String.format("%,d", projectedRevenue.toLong())}", fontWeight = FontWeight.Bold, color = AgriForestGreen, fontSize = 13.sp)
                 }
 
-                Spacer(modifier = Modifier.height(10.dp))
+                HorizontalDivider(modifier = Modifier.padding(vertical = 10.dp), color = AgriLineSubtle)
 
                 // Net Profit Highlight
                 Surface(
                     shape = RoundedCornerShape(12.dp),
-                    color = AgriPaleYellow,
-                    border = androidx.compose.foundation.BorderStroke(1.dp, AgriOchre.copy(alpha = 0.5f)),
+                    color = if (netProfit >= 0) AgriPaleYellow else AgriTomatoRed.copy(alpha = 0.1f),
+                    border = androidx.compose.foundation.BorderStroke(1.dp, if (netProfit >= 0) AgriOchre.copy(alpha = 0.5f) else AgriTomatoRed),
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     Row(
@@ -255,10 +319,24 @@ fun YieldCostScreen(
                     ) {
                         Column {
                             Text(st("Estimated Net Profit"), fontSize = 11.sp, fontWeight = FontWeight.Bold, color = AgriEarthBrown)
-                            Text("₹${yield.projectedRevenue - yield.estimatedCostTotal}", style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.ExtraBold, color = AgriForestGreen)
+                            Text(
+                                text = "₹${String.format("%,d", netProfit.toLong())}",
+                                style = MaterialTheme.typography.titleLarge,
+                                fontWeight = FontWeight.ExtraBold,
+                                color = if (netProfit >= 0) AgriForestGreen else AgriTomatoRed
+                            )
                         }
-                        Surface(color = AgriForestGreen, shape = RoundedCornerShape(8.dp)) {
-                            Text("+151% Net ROI", color = Color.White, fontSize = 11.sp, fontWeight = FontWeight.Bold, modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp))
+                        Surface(
+                            color = if (netProfit >= 0) AgriForestGreen else AgriTomatoRed,
+                            shape = RoundedCornerShape(8.dp)
+                        ) {
+                            Text(
+                                text = "${if (netRoiPercent >= 0) "+" else ""}$netRoiPercent% ROI",
+                                color = Color.White,
+                                fontSize = 11.sp,
+                                fontWeight = FontWeight.Bold,
+                                modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
+                            )
                         }
                     }
                 }
@@ -267,7 +345,7 @@ fun YieldCostScreen(
 
         Spacer(modifier = Modifier.height(14.dp))
 
-        // Harvest Readiness Tips
+        // Harvest Timing Recommendations
         Card(
             shape = RoundedCornerShape(16.dp),
             colors = CardDefaults.cardColors(containerColor = AgriCardSurface),
